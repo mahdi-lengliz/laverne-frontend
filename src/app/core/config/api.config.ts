@@ -1,10 +1,9 @@
-const localBackendUrl = 'http://localhost:8080';
+import { environment } from '../../../environments/environment';
 
-export const API_BASE_URL = window.location.hostname === 'localhost' && window.location.port === '4200'
-  ? localBackendUrl
-  : '';
+const knownBackendUrls = ['http://localhost:8080', environment.apiBaseUrl].filter(Boolean);
 
-export const API_URL = `${API_BASE_URL}/api`;
+export const API_BASE_URL = environment.apiBaseUrl;
+export const API_URL = `${environment.apiBaseUrl}/api`;
 
 export function assetUrl(url?: string): string | undefined {
   if (!url) return undefined;
@@ -15,7 +14,8 @@ export function assetUrl(url?: string): string | undefined {
 
 export function persistedAssetUrl(url?: string): string {
   if (!url) return '';
-  if (url.startsWith(localBackendUrl)) return url.slice(localBackendUrl.length);
-  if (API_BASE_URL && url.startsWith(API_BASE_URL)) return url.slice(API_BASE_URL.length);
+  for (const backendUrl of knownBackendUrls) {
+    if (url.startsWith(backendUrl)) return url.slice(backendUrl.length);
+  }
   return url;
 }
