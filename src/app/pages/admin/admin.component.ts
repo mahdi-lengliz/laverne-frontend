@@ -110,21 +110,23 @@ type AdminTab = 'orders' | 'products';
                 <div class="fg check"><input type="checkbox" [(ngModel)]="productForm.collection"><label>🎁 Inclure dans Collections Exclusives</label></div>
                 <div class="fg">
                   <label>Image principale</label>
-                  <label class="image-picker">
-                    <input type="file" accept="image/*" (change)="uploadImage($event, 'imageUrl')">
+                  <label class="image-picker" [class.uploading]="isImageUploading('imageUrl')">
+                    <input type="file" accept="image/*" [disabled]="isImageUploading('imageUrl')" (change)="uploadImage($event, 'imageUrl')">
                     @if (productForm.imageUrl) { <img [src]="displayImage(productForm.imageUrl)" alt="Image principale"> }
                     @else { <span class="image-picker-ico">+</span> }
-                    <span class="image-picker-text">{{ productForm.imageUrl ? 'Changer l image' : 'Choisir une image' }}</span>
+                    @if (isImageUploading('imageUrl')) { <span class="image-upload-state"><span class="image-spinner"></span><span>Upload en cours...</span></span> }
+                    @else { <span class="image-picker-text">{{ productForm.imageUrl ? 'Changer l image' : 'Choisir une image' }}</span> }
                   </label>
                   @if (productForm.imageUrl) { <span class="file-url">{{ productForm.imageUrl }}</span> }
                 </div>
                 <div class="fg">
                   <label>2eme image - optionnel</label>
-                  <label class="image-picker">
-                    <input type="file" accept="image/*" (change)="uploadImage($event, 'imageUrl2')">
+                  <label class="image-picker" [class.uploading]="isImageUploading('imageUrl2')">
+                    <input type="file" accept="image/*" [disabled]="isImageUploading('imageUrl2')" (change)="uploadImage($event, 'imageUrl2')">
                     @if (productForm.imageUrl2) { <img [src]="displayImage(productForm.imageUrl2)" alt="Deuxieme image"> }
                     @else { <span class="image-picker-ico">+</span> }
-                    <span class="image-picker-text">{{ productForm.imageUrl2 ? 'Changer l image' : 'Choisir une image' }}</span>
+                    @if (isImageUploading('imageUrl2')) { <span class="image-upload-state"><span class="image-spinner"></span><span>Upload en cours...</span></span> }
+                    @else { <span class="image-picker-text">{{ productForm.imageUrl2 ? 'Changer l image' : 'Choisir une image' }}</span> }
                   </label>
                   @if (productForm.imageUrl2) { <span class="file-url">{{ productForm.imageUrl2 }}</span> }
                 </div>
@@ -178,6 +180,7 @@ export class AdminComponent implements OnInit {
   editingProduct: Product | null = null;
   notesText = '';
   productForm: ProductRequest;
+  imageUploading: Partial<Record<'imageUrl' | 'imageUrl2', boolean>> = {};
 
   constructor(public authService: AuthService, public storeService: StoreService, public router: Router, private apiService: ApiService, private toastService: ToastService) {
     this.productForm = this.emptyProductForm();
@@ -247,12 +250,21 @@ export class AdminComponent implements OnInit {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0];
     if (!file) return;
+    this.imageUploading = { ...this.imageUploading, [field]: true };
     this.apiService.uploadProductImage(file).subscribe({
       next: response => {
         this.productForm = { ...this.productForm, [field]: persistedAssetUrl(response.url) };
         this.toastService.show('Image ajoutee');
       },
-      error: error => this.toastService.show(error?.error?.message || 'Upload impossible', 'err')
+      error: error => {
+        this.imageUploading = { ...this.imageUploading, [field]: false };
+        input.value = '';
+        this.toastService.show(error?.error?.message || 'Upload impossible', 'err');
+      },
+      complete: () => {
+        this.imageUploading = { ...this.imageUploading, [field]: false };
+        input.value = '';
+      }
     });
   }
 
@@ -267,5 +279,9 @@ export class AdminComponent implements OnInit {
 
   displayImage(url?: string): string {
     return assetUrl(url) || '';
+  }
+
+  isImageUploading(field: 'imageUrl' | 'imageUrl2'): boolean {
+    return Boolean(this.imageUploading[field]);
   }
 }
