@@ -9,6 +9,7 @@ import { StoreService } from '../../core/services/store.service';
 interface HeroImage {
   src: string;
   alt: string;
+  kind: 'editorial' | 'product';
   position?: string;
 }
 
@@ -27,7 +28,7 @@ interface HeroImage {
       <div class="hero-right">
         @if (heroImages$ | async; as heroImages) {
           @for (image of heroImages; track image.src; let index = $index) {
-            <img class="hero-photo" [class.active]="isHeroImageActive(index, heroImages.length)" [style.object-position]="image.position || null" [src]="image.src" [alt]="image.alt">
+            <img class="hero-photo" [class.active]="isHeroImageActive(index, heroImages.length)" [class.hero-editorial]="image.kind === 'editorial'" [class.hero-product]="image.kind === 'product'" [style.object-position]="image.position || null" [src]="image.src" [alt]="image.alt">
           }
           @if (!heroImages.length) {
             <div class="hero-product-fallback"><span>LAVERNE</span><small>Parfums Authentiques</small></div>
@@ -52,7 +53,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   bestSellers$;
   heroImages$;
   activeHeroImage = 0;
-  private readonly editorialHeroImage: HeroImage = { src: 'hero-laverne-banner.webp', alt: 'Campagne LAVERNE', position: '18% center' };
+  private readonly editorialHeroImage: HeroImage = { src: 'hero-laverne-banner.webp', alt: 'Campagne LAVERNE', kind: 'editorial', position: '18% center' };
   private heroTimer?: ReturnType<typeof setInterval>;
   trustItems = [
     { i: '🚚', t: 'Livraison rapide', s: '2-5 jours partout en Tunisie' },
@@ -75,7 +76,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.editorialHeroImage,
       ...products.flatMap(product => [product.imageUrl, product.imageUrl2]
         .filter((src): src is string => Boolean(src))
-        .map(src => ({ src, alt: product.name } as HeroImage)))
+        .map(src => ({ src, alt: product.name, kind: 'product' } as HeroImage)))
     ].slice(0, 8)));
 
     this.bestSellers$ = this.storeService.products$.pipe(map(products => {

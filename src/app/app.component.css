@@ -74,7 +74,9 @@ footer{background:var(--text);color:var(--bg);padding:4rem 2.5rem 1.5rem}.footer
   .hero-p{font-size:.62rem;line-height:1.95;max-width:none;margin-bottom:1.8rem}
   .hero-ctas{display:grid;grid-template-columns:1fr;gap:.75rem}
   .hero-ctas .btn-dark,.hero-ctas .btn-border{width:100%;padding:1rem 1.1rem;letter-spacing:.18em}
-  .hero-right{height:115px;min-height:115px;order:2;margin-top:0}
+  .hero-right{height:180px;min-height:180px;order:2;margin-top:0;background:var(--bg2)}
+  .hero-photo.hero-product{display:none}
+  .hero-photo.hero-editorial{opacity:.9!important;object-position:18% center!important}
   .hero-video{opacity:.45}
   .hero-video-overlay{background:linear-gradient(to right,rgba(250,247,242,.28) 0%,rgba(250,247,242,.08) 30%,rgba(28,25,22,.08) 100%)}
   .hero + .strip{margin-top:0}
@@ -100,5 +102,5 @@ footer{background:var(--text);color:var(--bg);padding:4rem 2.5rem 1.5rem}.footer
   .hero-left{padding-top:3.8rem}
   .hero-h1{font-size:2.25rem;line-height:1.1}
   .hero-p{font-size:.58rem}
-  .hero-right{height:95px;min-height:95px}
+  .hero-right{height:155px;min-height:155px}
 }
