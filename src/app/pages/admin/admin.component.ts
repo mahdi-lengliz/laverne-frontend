@@ -22,8 +22,8 @@ type AdminTab = 'orders' | 'products';
       <div class="login-wrap">
         <div class="login-box">
           <div class="admin-logo">LAVERNE<span>Dashboard Admin · Tunisie</span></div>
-          <div class="fg"><label>Utilisateur</label><input class="fi" [(ngModel)]="login.username" name="username"></div>
-          <div class="fg"><label>Mot de passe</label><input class="fi" type="password" [(ngModel)]="login.password" name="password"></div>
+          <div class="fg"><label>Utilisateur</label><input class="fi" [(ngModel)]="login.username" name="admin_username" autocomplete="off" autocapitalize="none" spellcheck="false"></div>
+          <div class="fg"><label>Mot de passe</label><input class="fi" type="password" [(ngModel)]="login.password" name="admin_password" autocomplete="new-password"></div>
           <button class="btn-full-dark" type="button" (click)="adminLogin()">Se connecter</button>
           <button class="btn-full-border" type="button" (click)="router.navigateByUrl('/')">Retour au site</button>
         </div>
@@ -172,7 +172,7 @@ export class AdminComponent implements OnInit {
   protected readonly formatPrice = formatPrice;
   protected readonly categoryLabel = categoryLabel;
   protected readonly stockInfo = stockInfo;
-  login = { username: 'admin', password: 'admin123' };
+  login = { username: '', password: '' };
   adminTab: AdminTab = 'orders';
   orders: Order[] = [];
   adminStats: AdminStats = { orders: 0, pendingOrders: 0, revenue: 0, products: 0 };
