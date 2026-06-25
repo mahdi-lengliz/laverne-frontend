@@ -18,7 +18,7 @@ import { FooterComponent } from '../../layout/footer/footer.component';
       <div class="detail-wrap">
         <div class="detail-media">
           <div class="detail-img-box">
-            @if (images().length > 0) { <img [src]="images()[activeImage]" [alt]="product.name"> }
+            @if (images().length > 0) { <img [src]="images()[activeImage]" [alt]="product.name" fetchpriority="high" decoding="async"> }
             @else { <span class="detail-emoji">{{ product.emoji || '🧴' }}</span> }
           </div>
           @if (images().length > 1) {

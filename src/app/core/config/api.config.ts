@@ -1,6 +1,7 @@
 import { environment } from '../../../environments/environment';
 
-const knownBackendUrls = ['http://localhost:8080', environment.apiBaseUrl].filter(Boolean);
+const productionBackendUrl = `${window.location.protocol}//${window.location.hostname}:8088`;
+const knownBackendUrls = ['http://localhost:8080', productionBackendUrl, environment.apiBaseUrl].filter(Boolean);
 
 export const API_BASE_URL = environment.apiBaseUrl;
 export const API_URL = `${environment.apiBaseUrl}/api`;

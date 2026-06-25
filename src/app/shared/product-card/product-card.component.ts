@@ -13,7 +13,7 @@ import { badgeClass, formatPrice, stockInfo } from '../../core/utils/format.util
   template: `
     <button class="prod-card" type="button" (click)="openProduct()">
       <span class="prod-img">
-        @if (product.imageUrl) { <img [src]="product.imageUrl" [alt]="product.name"> }
+        @if (product.imageUrl) { <img [src]="product.imageUrl" [alt]="product.name" loading="lazy" decoding="async"> }
         @else { <span class="prod-emoji">{{ product.emoji || '🧴' }}</span> }
         @if (product.badge) { <span class="prod-badge" [ngClass]="badgeClass(product.badge)">{{ product.badge }}</span> }
         <span class="stock-tag" [ngClass]="stockInfo(product.stock).cls">{{ stockInfo(product.stock).label }}</span>

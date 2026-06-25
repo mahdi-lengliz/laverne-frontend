@@ -19,7 +19,7 @@ import { formatPrice } from '../../core/utils/format.utils';
             <div>
               @for (item of cart; track item.id) {
                 <div class="cart-item">
-                  <div class="ci-img">@if (item.imageUrl) { <img [src]="item.imageUrl" [alt]="item.name"> } @else { <span>{{ item.emoji || '🧴' }}</span> }</div>
+                  <div class="ci-img">@if (item.imageUrl) { <img [src]="item.imageUrl" [alt]="item.name" loading="lazy" decoding="async"> } @else { <span>{{ item.emoji || '🧴' }}</span> }</div>
                   <div><div class="ci-name">{{ item.name }}</div><div class="ci-sub">{{ item.sub }} @if (item.perfumeSize) { · {{ item.perfumeSize }} ML }</div><div class="ci-qty"><button class="ci-qb" type="button" (click)="cartService.update(item.id, item.qty - 1)">−</button><span>{{ item.qty }}</span><button class="ci-qb" type="button" (click)="cartService.update(item.id, item.qty + 1)">+</button><button class="ci-remove" type="button" (click)="cartService.update(item.id, 0)">Retirer</button></div></div>
                   <div><div class="ci-price">{{ formatPrice(item.price * item.qty) }}</div><div class="ci-unit">{{ formatPrice(item.price) }} / u</div></div>
                 </div>
