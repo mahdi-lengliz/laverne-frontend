@@ -17,6 +17,7 @@ export interface Order {
   id: number;
   orderNumber: string;
   customerName: string;
+  customerEmail: string;
   customerPhone: string;
   city: string;
   total: number;

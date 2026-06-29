@@ -9,7 +9,7 @@ export function categoryLabel(name: string): string {
 export function stockInfo(stock: number): { label: string; cls: string; canBuy: boolean } {
   const value = Number(stock || 0);
   if (value <= 0) return { label: 'Rupture de stock', cls: 'stock-out', canBuy: false };
-  if (value <= 10) return { label: `Plus que ${value} unites`, cls: 'stock-low', canBuy: true };
+  if (value <= 10) return { label: `Plus que ${value} unités`, cls: 'stock-low', canBuy: true };
   return { label: 'En stock', cls: 'stock-ok', canBuy: true };
 }
 

@@ -32,7 +32,7 @@ type AdminTab = 'orders' | 'products';
       <div class="admin-wrap">
         <div class="admin-top">
           <div class="admin-logo">LAVERNE<span>Dashboard Admin · Tunisie</span></div>
-          <button class="btn-border" type="button" (click)="logout()">Deconnexion</button>
+          <button class="btn-border" type="button" (click)="logout()">Déconnexion</button>
           <button class="btn-border" type="button" (click)="router.navigateByUrl('/')">Retour au site</button>
         </div>
 
@@ -51,12 +51,13 @@ type AdminTab = 'orders' | 'products';
         @if (adminTab === 'orders') {
           <div class="tbl-wrap">
             <table>
-              <thead><tr><th>Reference</th><th>Client</th><th>Telephone</th><th>Ville</th><th>Total</th><th>Statut</th></tr></thead>
+              <thead><tr><th>Référence</th><th>Client</th> <th>Email</th><th>Téléphone</th><th>Ville</th><th>Total</th><th>Statut</th></tr></thead>
               <tbody>
                 @for (order of orders; track order.id) {
                   <tr>
                     <td>{{ order.orderNumber }}</td>
                     <td>{{ order.customerName }}</td>
+                    <td>{{ order.customerEmail || '-' }}</td>
                     <td>{{ order.customerPhone }}</td>
                     <td>{{ order.city }}</td>
                     <td>{{ formatPrice(order.total) }}</td>
@@ -64,9 +65,9 @@ type AdminTab = 'orders' | 'products';
                       <div class="status-select" [ngClass]="statusClass(order.status)">
                         <select class="sel-status" [ngModel]="order.status" (ngModelChange)="updateStatus(order, $event)">
                           <option value="PENDING">En attente</option>
-                          <option value="CONFIRMED">Confirmee</option>
-                          <option value="DELIVERED">Livree</option>
-                          <option value="CANCELLED">Annulee</option>
+                          <option value="CONFIRMED">Confirmée</option>
+                          <option value="DELIVERED">Livrée</option>
+                          <option value="CANCELLED">Annulée</option>
                         </select>
                       </div>
                     </td>
@@ -89,7 +90,7 @@ type AdminTab = 'orders' | 'products';
                 <div class="fg"><label>Contenance ML</label><input class="fi" type="number" [(ngModel)]="productForm.perfumeSize"></div>
                 <div class="fg"><label>Prix *</label><input class="fi" type="number" [(ngModel)]="productForm.price"></div>
                 <div class="fg">
-                  <label>Categorie</label>
+                  <label>Catégorie</label>
                   <select class="fsel" [(ngModel)]="productForm.categoryId">
                     @for (category of storeService.categories$ | async; track category.id) {
                       <option [value]="category.id">{{ categoryLabel(category.name) }}</option>
@@ -115,18 +116,18 @@ type AdminTab = 'orders' | 'products';
                     @if (productForm.imageUrl) { <img [src]="displayImage(productForm.imageUrl)" alt="Image principale"> }
                     @else { <span class="image-picker-ico">+</span> }
                     @if (isImageUploading('imageUrl')) { <span class="image-upload-state"><span class="image-spinner"></span><span>Upload en cours...</span></span> }
-                    @else { <span class="image-picker-text">{{ productForm.imageUrl ? 'Changer l image' : 'Choisir une image' }}</span> }
+                    @else { <span class="image-picker-text">{{ imageButtonLabel(productForm.imageUrl) }}</span> }
                   </label>
                   @if (productForm.imageUrl) { <span class="file-url">{{ productForm.imageUrl }}</span> }
                 </div>
                 <div class="fg">
-                  <label>2eme image - optionnel</label>
+                  <label>2ème image - optionnel</label>
                   <label class="image-picker" [class.uploading]="isImageUploading('imageUrl2')">
                     <input type="file" accept="image/*" [disabled]="isImageUploading('imageUrl2')" (change)="uploadImage($event, 'imageUrl2')">
-                    @if (productForm.imageUrl2) { <img [src]="displayImage(productForm.imageUrl2)" alt="Deuxieme image"> }
+                    @if (productForm.imageUrl2) { <img [src]="displayImage(productForm.imageUrl2)" alt="Deuxième image"> }
                     @else { <span class="image-picker-ico">+</span> }
                     @if (isImageUploading('imageUrl2')) { <span class="image-upload-state"><span class="image-spinner"></span><span>Upload en cours...</span></span> }
-                    @else { <span class="image-picker-text">{{ productForm.imageUrl2 ? 'Changer l image' : 'Choisir une image' }}</span> }
+                    @else { <span class="image-picker-text">{{ imageButtonLabel(productForm.imageUrl2) }}</span> }
                   </label>
                   @if (productForm.imageUrl2) { <span class="file-url">{{ productForm.imageUrl2 }}</span> }
                 </div>
@@ -226,6 +227,7 @@ export class AdminComponent implements OnInit {
     this.productFormOpen = true;
     this.productForm = { name: product.name, sub: product.sub, perfumeSize: product.perfumeSize, price: product.price, categoryId: product.categoryId, emoji: product.emoji, badge: product.badge, description: product.description, stock: product.stock, imageUrl: persistedAssetUrl(product.imageUrl), imageUrl2: persistedAssetUrl(product.imageUrl2), collection: product.collection };
     this.notesText = product.notes.join(', ');
+    this.scrollToProductForm();
   }
 
   saveProduct(): void {
@@ -242,7 +244,7 @@ export class AdminComponent implements OnInit {
       this.productForm = this.emptyProductForm();
       this.notesText = '';
       this.loadAdmin();
-      this.toastService.show('Produit sauvegarde');
+      this.toastService.show('Produit sauvegardé');
     });
   }
 
@@ -254,7 +256,7 @@ export class AdminComponent implements OnInit {
     this.apiService.uploadProductImage(file).subscribe({
       next: response => {
         this.productForm = { ...this.productForm, [field]: persistedAssetUrl(response.url) };
-        this.toastService.show('Image ajoutee');
+        this.toastService.show('Image ajoutée');
       },
       error: error => {
         this.imageUploading = { ...this.imageUploading, [field]: false };
@@ -270,11 +272,15 @@ export class AdminComponent implements OnInit {
 
   deleteProduct(product: Product): void {
     if (!confirm(`Supprimer ${product.name} ?`)) return;
-    this.apiService.deleteProduct(product.id).subscribe(() => { this.storeService.removeProduct(product.id); this.loadAdmin(); this.toastService.show('Produit supprime'); });
+    this.apiService.deleteProduct(product.id).subscribe(() => { this.storeService.removeProduct(product.id); this.loadAdmin(); this.toastService.show('Produit supprimé'); });
   }
 
   private emptyProductForm(): ProductRequest {
     return { name: '', sub: 'Eau de Parfum', perfumeSize: 100, price: null, categoryId: this.storeService.categories[0]?.id ?? 0, emoji: '🧴', badge: '', description: '', stock: 0, imageUrl: '', imageUrl2: '', collection: false };
+  }
+
+  private scrollToProductForm(): void {
+    setTimeout(() => document.querySelector('.pform')?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
   }
 
   displayImage(url?: string): string {
@@ -283,5 +289,9 @@ export class AdminComponent implements OnInit {
 
   isImageUploading(field: 'imageUrl' | 'imageUrl2'): boolean {
     return Boolean(this.imageUploading[field]);
+  }
+
+  imageButtonLabel(url: string | null | undefined): string {
+    return url ? "Changer l'image" : 'Choisir une image';
   }
 }
