@@ -51,7 +51,7 @@ type AdminTab = 'orders' | 'products';
         @if (adminTab === 'orders') {
           <div class="tbl-wrap">
             <table>
-              <thead><tr><th>Référence</th><th>Client</th> <th>Email</th><th>Téléphone</th><th>Ville</th><th>Total</th><th>Statut</th></tr></thead>
+              <thead><tr><th>Référence</th><th>Client</th> <th>Email</th><th>Téléphone</th><th>Produits</th><th>Ville</th><th>Total</th><th>Statut</th></tr></thead>
               <tbody>
                 @for (order of orders; track order.id) {
                   <tr>
@@ -59,6 +59,7 @@ type AdminTab = 'orders' | 'products';
                     <td>{{ order.customerName }}</td>
                     <td>{{ order.customerEmail || '-' }}</td>
                     <td>{{ order.customerPhone }}</td>
+                    <td>@for (item of order.items; track item.productId) {<span class="order-item-name">{{ item.emoji || '🧴' }} {{ item.productName }} x{{ item.quantity }}<br></span>}</td>
                     <td>{{ order.city }}</td>
                     <td>{{ formatPrice(order.total) }}</td>
                     <td>
@@ -138,11 +139,12 @@ type AdminTab = 'orders' | 'products';
             </div>
           }
 
+          <div class="admin-search"><span class="admin-search-ico">🔍</span><input class="fi" type="text" placeholder="Rechercher un produit..." [(ngModel)]="searchTerm"></div>
           <div class="tbl-wrap">
             <table>
               <thead><tr><th>Produit</th><th>Taille</th><th>Stock</th><th>Prix</th><th>Badge</th><th>Collection</th><th>Actions</th></tr></thead>
               <tbody>
-                @for (product of storeService.products$ | async; track product.id) {
+                @for (product of filteredProducts; track product.id) {
                   <tr>
                     <td>
                       <div class="admin-product-cell">
@@ -154,7 +156,7 @@ type AdminTab = 'orders' | 'products';
                       </div>
                     </td>
                     <td>{{ product.perfumeSize || '-' }} ML</td>
-                    <td>{{ stockInfo(product.stock).label }}</td>
+                    <td>{{ product.stock }} ({{ stockInfo(product.stock).label }})</td>
                     <td>{{ formatPrice(product.price) }}</td>
                     <td>{{ product.badge || '-' }}</td>
                     <td class="collection-cell">{{ product.collection ? '🎁' : '-' }}</td>
@@ -182,6 +184,13 @@ export class AdminComponent implements OnInit {
   notesText = '';
   productForm: ProductRequest;
   imageUploading: Partial<Record<'imageUrl' | 'imageUrl2', boolean>> = {};
+  searchTerm = '';
+
+  get filteredProducts(): Product[] {
+    const term = this.searchTerm.toLowerCase().trim();
+    if (!term) return this.storeService.products;
+    return this.storeService.products.filter(p => p.name.toLowerCase().includes(term));
+  }
 
   constructor(public authService: AuthService, public storeService: StoreService, public router: Router, private apiService: ApiService, private toastService: ToastService) {
     this.productForm = this.emptyProductForm();
@@ -205,7 +214,7 @@ export class AdminComponent implements OnInit {
   }
 
   updateStatus(order: Order, status: string): void {
-    this.apiService.updateOrderStatus(order.id, status).subscribe(updated => { order.status = updated.status; this.loadAdmin(); });
+    this.apiService.updateOrderStatus(order.id, status).subscribe(updated => { order.status = updated.status; this.loadAdmin(); this.storeService.load(); });
   }
 
   statusClass(status: string): string {

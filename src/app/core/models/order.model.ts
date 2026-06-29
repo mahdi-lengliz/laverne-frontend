@@ -13,6 +13,16 @@ export interface OrderCreateRequest {
   items: OrderItemRequest[];
 }
 
+export interface OrderItem {
+  productId: number;
+  productName: string;
+  quantity: number;
+  unitPrice: number;
+  perfumeSize: number | null;
+  imageUrl: string | null;
+  emoji: string | null;
+}
+
 export interface Order {
   id: number;
   orderNumber: string;
@@ -22,6 +32,7 @@ export interface Order {
   city: string;
   total: number;
   status: string;
+  items: OrderItem[];
 }
 
 export interface AdminStats {

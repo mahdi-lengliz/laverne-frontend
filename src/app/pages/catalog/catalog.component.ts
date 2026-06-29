@@ -26,7 +26,7 @@ import { ProductCardComponent } from '../../shared/product-card/product-card.com
           }
           <button type="button" [class.selected]="collectionFilter" (click)="setCollectionFilter()">Cofret</button>
         </div>
-        <div class="filter-group catalog-controls"><input class="fsel catalog-search" type="search" [(ngModel)]="searchTerm" placeholder="Rechercher un parfum..."><select class="fsel" [(ngModel)]="sizeFilter"><option value="">Toutes les contenances</option>@for (size of sizes$ | async; track size) { <option [value]="size">{{ size }} ML</option> }</select><select class="fsel" [(ngModel)]="sort"><option value="default">S?lection</option><option value="asc">Prix croissant</option><option value="desc">Prix d?croissant</option></select></div>
+        <div class="filter-group catalog-controls"><input class="fsel catalog-search" type="search" [(ngModel)]="searchTerm" placeholder="Rechercher un parfum..."><select class="fsel" [(ngModel)]="sizeFilter"><option value="">Toutes les contenances</option>@for (size of sizes$ | async; track size) { <option [value]="size">{{ size }} ML</option> }</select><select class="fsel" [(ngModel)]="sort"><option value="default">Sélection</option><option value="asc">Prix croissant</option><option value="desc">Prix décroissant</option></select></div>
       </div>
       @if (storeService.products$ | async; as products) {
         @if (filteredProducts(products).length === 0) { <div class="empty-state"><div class="empty-ico">🧴</div><div class="empty-t">Aucun parfum trouvé</div></div> }
