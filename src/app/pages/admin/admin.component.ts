@@ -151,7 +151,7 @@ type AdminTab = 'orders' | 'products';
                         <span class="admin-product-emoji">{{ product.emoji || '🧴' }}</span>
                         <span>
                           <span class="admin-product-name">{{ product.name }}</span>
-                          <span class="admin-product-sub">{{ product.sub || 'Eau de Parfum' }}@if (product.perfumeSize) { size: {{ product.perfumeSize }} ml }</span>
+                          <span class="admin-product-sub">@if (product.perfumeSize) { Contenance : {{ product.perfumeSize }} ml }</span>
                         </span>
                       </div>
                     </td>
