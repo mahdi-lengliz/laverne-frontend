@@ -38,8 +38,8 @@ type AdminTab = 'orders' | 'products';
 
         <div class="stats">
           <div class="stat-card"><div class="stat-l">Commandes</div><div class="stat-v">{{ adminStats.orders }}</div><div class="stat-s">Total</div></div>
-          <div class="stat-card"><div class="stat-l">En attente</div><div class="stat-v">{{ adminStats.pendingOrders }}</div><div class="stat-s">A traiter</div></div>
-          <div class="stat-card"><div class="stat-l">Chiffre affaires</div><div class="stat-v">{{ formatPrice(adminStats.revenue) }}</div><div class="stat-s">Actives</div></div>
+          <div class="stat-card"><div class="stat-l">En attente</div><div class="stat-v">{{ adminStats.pendingOrders }}</div><div class="stat-s">À traiter</div></div>
+          <div class="stat-card"><div class="stat-l">Chiffre d'affaires</div><div class="stat-v">{{ formatPrice(adminStats.revenue) }}</div><div class="stat-s">Actives</div></div>
           <div class="stat-card"><div class="stat-l">Produits</div><div class="stat-v">{{ adminStats.products }}</div><div class="stat-s">Catalogue</div></div>
         </div>
 
