@@ -39,7 +39,7 @@ export class NavbarComponent {
     { label: 'Accueil', path: '/', exact: true },
     { label: 'Pour elle', path: '/elle' },
     { label: 'Pour lui', path: '/lui' },
-    { label: 'Unisex', path: '/unisex' },
+    { label: 'Unisexe', path: '/unisex' },
     { label: 'Collections exclusives', path: '/exclusives' }
   ];
   mobileLinks = [...this.navLinks, { label: 'Panier', path: '/cart' }];

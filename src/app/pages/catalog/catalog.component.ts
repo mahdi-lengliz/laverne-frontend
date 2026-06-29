@@ -24,7 +24,7 @@ import { ProductCardComponent } from '../../shared/product-card/product-card.com
           @for (category of storeService.categories$ | async; track category.id) {
             <button type="button" [class.selected]="isCategorySelected(category)" (click)="setFilter(category.id)">{{ catalogCategoryLabel(category.name) }}</button>
           }
-          <button type="button" [class.selected]="collectionFilter" (click)="setCollectionFilter()">Cofret</button>
+          <button type="button" [class.selected]="collectionFilter" (click)="setCollectionFilter()">Coffret</button>
         </div>
         <div class="filter-group catalog-controls"><input class="fsel catalog-search" type="search" [(ngModel)]="searchTerm" placeholder="Rechercher un parfum..."><select class="fsel" [(ngModel)]="sizeFilter"><option value="">Toutes les contenances</option>@for (size of sizes$ | async; track size) { <option [value]="size">{{ size }} ML</option> }</select><select class="fsel" [(ngModel)]="sort"><option value="default">Sélection</option><option value="asc">Prix croissant</option><option value="desc">Prix décroissant</option></select></div>
       </div>
@@ -134,13 +134,13 @@ export class CatalogComponent implements OnInit {
     const normalized = this.normalizedCategoryName(name);
     if (normalized.includes('women') || normalized.includes('pour elle')) return 'Femme';
     if (normalized.includes('men') || normalized.includes('pour lui')) return 'Homme';
-    if (normalized.includes('unisex')) return 'Unisex';
+    if (normalized.includes('unisex')) return 'Unisexe';
     return categoryLabel(name);
   }
 
   displayTitle(): string {
     if (this.allFilterSelected) return 'Tous les <em>Parfums</em>';
-    if (this.collectionFilter) return '<em>Cofret</em>';
+    if (this.collectionFilter) return '<em>Coffret</em>';
     if (this.categoryFilter !== null) {
       const category = this.storeService.categories.find(item => item.id === this.categoryFilter);
       return category ? `<em>${this.catalogCategoryLabel(category.name)}</em>` : this.title;
