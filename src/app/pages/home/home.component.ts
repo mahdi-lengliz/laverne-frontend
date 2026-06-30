@@ -16,11 +16,11 @@ import { StoreService } from '../../core/services/store.service';
         <div class="hero-tag">Revendeur Officiel · Tunisie</div>
         <h1 class="hero-h1">Sois <em>Différent</em>.<br>Sois LAVERNE.</h1>
         <p class="hero-p">Les parfums saoudiens les plus désirés, Blue, Phantom, Tobacco, désormais disponibles partout en Tunisie. Livraison rapide, paiement à la réception.</p>
-        <div class="hero-ctas"><button class="btn-dark" type="button" (click)="router.navigateByUrl('/collections')">Découvrir la Collection →</button><button class="btn-border" type="button" (click)="router.navigateByUrl('/elle')">Pour Elle</button></div>
+        <div class="hero-ctas"><button class="btn-dark" type="button" (click)="router.navigateByUrl('/collections')">Découvrir la Collection →</button></div>
       </div>
       <div class="hero-right">
-        <video class="hero-video" #heroVideo autoplay muted loop playsinline preload="auto">
-          <source src="/banner-laverne-miss-laverne-phone.mp4" type="video/mp4">
+        <video class="hero-video" #heroVideo autoplay muted loop playsinline preload="auto" [muted]="true" [defaultMuted]="true" [volume]="0" (loadedmetadata)="ensureHeroVideoMuted()" (canplay)="playHeroVideo()" (volumechange)="ensureHeroVideoMuted()">
+          <source src="/laverne-banniere-2.mp4" type="video/mp4">
         </video>
         <div class="hero-video-overlay"></div>
       </div>
@@ -41,7 +41,20 @@ export class HomeComponent implements AfterViewInit {
   bestSellers$;
 
   ngAfterViewInit(): void {
-    this.heroVideo.nativeElement.play().catch(() => {});
+    this.playHeroVideo();
+  }
+
+  ensureHeroVideoMuted(): void {
+    const video = this.heroVideo?.nativeElement;
+    if (!video) return;
+    video.muted = true;
+    video.defaultMuted = true;
+    video.volume = 0;
+  }
+
+  playHeroVideo(): void {
+    this.ensureHeroVideoMuted();
+    this.heroVideo?.nativeElement.play().catch(() => {});
   }
   banners = [
     { tag: 'Pour Elle', title: 'Parfums Femme', sub: 'Floraux, poudrés et sucrés', path: '/elle' },

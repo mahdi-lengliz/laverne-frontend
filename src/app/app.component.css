@@ -117,7 +117,8 @@ footer{background:var(--text);color:var(--bg);padding:4rem 2.5rem 1.5rem}.footer
 .catalog-section .fsel{font-size:.72rem;padding:.7rem .9rem}
 .catalog-controls{align-items:center}.catalog-search{min-width:260px}
 .brand-logo-img{width:auto;height:42px;max-width:166px;max-height:42px;object-fit:contain}nav.solid .brand-logo-img{mix-blend-mode:multiply}
-.nav-links a,.nav-admin,.nav-cart,.mob a,.sel-status{text-transform:none;font-weight:700;letter-spacing:.07em}
+.nav-links a{font-size:.78rem;text-transform:none;font-weight:700;letter-spacing:.08em}
+.nav-admin,.nav-cart,.mob a,.sel-status{text-transform:none;font-weight:700;letter-spacing:.07em}
 .hero-video{display:block;object-fit:cover;object-position:center center}
 
 @media(max-width:620px){
