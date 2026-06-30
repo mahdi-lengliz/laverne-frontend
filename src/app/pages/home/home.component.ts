@@ -15,7 +15,7 @@ import { StoreService } from '../../core/services/store.service';
       <div class="hero-left">
         <div class="hero-tag">Revendeur Officiel · Tunisie</div>
         <h1 class="hero-h1">Sois <em>Différent</em>.<br>Sois LAVERNE.</h1>
-        <p class="hero-p">Les parfums saoudiens les plus désirés, Blue, Phantom, Tobacco, désormais disponibles partout en Tunisie. Livraison rapide, paiement à la réception.</p>
+        <p class="hero-p">Là où chaque sillage raconte une histoire. Découvrez l'art du parfum arabe, livré directement chez vous en Tunisie.</p>
         <div class="hero-ctas"><button class="btn-dark" type="button" (click)="router.navigateByUrl('/collections')">Découvrir la Collection →</button></div>
       </div>
       <div class="hero-right">
