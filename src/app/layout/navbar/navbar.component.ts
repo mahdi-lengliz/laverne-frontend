@@ -10,7 +10,7 @@ import { CartService } from '../../core/services/cart.service';
   template: `
     <nav [class.solid]="solidNav || mobileOpen">
       <a class="brand" routerLink="/">
-        <img class="brand-logo-img" src="/LOGOLAVERNE.png" alt="LAVERNE Tunisie">
+        <img class="brand-logo-img" src="/LOGO2.webp" alt="LAVERNE Tunisie">
       </a>
       <ul class="nav-links">
         @for (link of navLinks; track link.path) {
@@ -18,7 +18,6 @@ import { CartService } from '../../core/services/cart.service';
         }
       </ul>
       <div class="nav-r">
-        <button class="nav-admin" type="button" (click)="router.navigateByUrl('/admin')">Admin</button>
         <button class="nav-cart" type="button" (click)="router.navigateByUrl('/cart')"><span class="cart-icon" aria-hidden="true">🛍</span> Panier @if (cartService.count() > 0) { <span class="cart-badge">{{ cartService.count() }}</span> }</button>
         <button class="ham" type="button" (click)="mobileOpen = !mobileOpen"><span></span><span></span><span></span></button>
       </div>
