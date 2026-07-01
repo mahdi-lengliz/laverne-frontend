@@ -33,7 +33,7 @@ import { RouterLink } from '@angular/router';
           <div class="footer-col-h">Contact</div>
           <ul class="footer-links footer-contact">
             <li><span class="footer-mini-icon">📧</span><a href="mailto:contact@laverne-tn.com">contact&#64;laverne-tn.com</a></li>
-            <li><span class="footer-mini-icon">📞</span><a href="tel:+21600000000">+216 XX XXX XXX</a></li>
+            <li><span class="footer-mini-icon">📞</span><a href="tel:+21670622977">+216 70 622 977</a></li>
             <li><span class="footer-mini-icon">📍</span><span>Tunis, Tunisie</span></li>
           </ul>
           <div class="footer-social">
